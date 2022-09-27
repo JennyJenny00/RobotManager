@@ -4,7 +4,7 @@
     {
         public int robotId { get; set; }
 
-        public float distanceToGoal { get; set; }
+        public double distanceToGoal { get; set; }
 
         public int batteryLevel { get; set; }
     }
