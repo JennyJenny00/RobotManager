@@ -1,0 +1,63 @@
+// Access the response data JSON as a JavaScript object
+const res = pm.response.json();
+
+// -----------------------------
+// - Structure data for charts -
+// -----------------------------
+
+// EDIT THIS OBJECT TO BIND YOUR DATA
+
+// ------------
+// - Template -
+// ------------
+
+// Configure the template
+var template = `
+<canvas id="myChart" height="55" width="55"></canvas>
+
+<script src="https://cdn.jsdelivr.net/npm/chart.js@3.9.1/dist/chart.min.js"></script> 
+
+<script>
+    // Get DOM element to render the chart in
+    var ctx = document.getElementById("myChart");
+
+    // Configure Chart JS here.
+    // You can customize the options passed to this constructor to
+    // make the chart look and behave the way you want
+    var myChart = new Chart(ctx, {
+        type: "scatter",
+        data: {
+            datasets: [{
+                label: 'All Robots',
+                data: [],
+                backgroundColor: 'rgb(255, 99, 132)'
+            }],
+            },
+        options: {
+            scales: {
+                x: {
+                    type: 'linear',
+                    position: 'bottom'
+                },
+                y: {
+                    type: 'linear',
+                    position: 'left'
+                }
+            }
+        }
+    });
+
+    // Access the data passed to pm.visualizer.set() from the JavaScript
+    // code of the Visualizer template
+    pm.getData(function (err, value) {
+        myChart.data.datasets[0].data = value;
+        myChart.update();
+    });
+</script>`;
+
+// -------------------------
+// - Bind data to template -
+// -------------------------
+
+// Set the visualizer template
+pm.visualizer.set(template, res);

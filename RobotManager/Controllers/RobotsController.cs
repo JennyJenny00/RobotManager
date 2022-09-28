@@ -53,13 +53,20 @@ namespace RobotManager.Controllers
                 }
             }
 
-            var closestRobot = new ClosestRobot
-            {
-                robotId = robotId,
-                distanceToGoal = minimumDistance,
-                batteryLevel = maximumBatteryLevel,
-            };
+            var closestRobot = new ClosestRobot(robotId, minimumDistance, maximumBatteryLevel);
             return closestRobot;
+        }
+
+        [HttpGet("findAll")]
+        public async Task<List<Robot>> FindAll()
+        {
+            List<Robot> robotList = new List<Robot>();
+            var robots = await GetRobots();
+            foreach (var robot in robots)
+            {
+                robotList.Add(robot);
+            }
+            return robotList;
         }
 
         private static async Task<IEnumerable<Robot>> GetRobots()
@@ -77,7 +84,7 @@ namespace RobotManager.Controllers
         {
             var xDiff = robot.x - load.x;
             var yDiff = robot.y - load.y;
-            var distance = Math.Sqrt(xDiff * yDiff + yDiff * xDiff);
+            var distance = Math.Sqrt(xDiff * xDiff + yDiff * yDiff);
             return distance;
         }
     }
